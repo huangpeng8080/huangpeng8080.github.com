@@ -1,0 +1,664 @@
+---
+layout: default
+title: 谈谈JS中的高级函数
+---
+
+<link rel="canonical" href="http://yoursite.com/2017/08/14/谈谈JS中的高级函数/">
+
+
+<title> 谈谈JS中的高级函数 | Claiyre的个人博客 </title>
+
+<body itemscope="" itemtype="http://schema.org/WebPage" lang="zh-Hans" class="" style="padding-right: 320px;">
+
+
+<div class="container sidebar-position-right page-post-detail ">
+    <div class="headband"></div>
+
+
+    <main id="main" class="main">
+        <div class="main-inner">
+            <div class="content-wrap">
+                <div id="content" class="content">
+
+
+                    <div id="posts" class="posts-expand">
+
+
+                        <article class="post post-type-normal" itemscope="" itemtype="http://schema.org/Article"
+                                 style="opacity: 1; display: block; transform: translateY(0px);">
+                            <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/08/14/谈谈JS中的高级函数/">
+
+                            <span hidden="" itemprop="author" itemscope="" itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Claiyre">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+                            <span hidden="" itemprop="publisher" itemscope="" itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Claiyre的个人博客">
+    </span>
+
+
+                            <header class="post-header">
+
+
+                                <h2 class="post-title" itemprop="name headline">
+
+
+                                    谈谈JS中的高级函数
+
+
+                                </h2>
+
+
+                                <div class="post-meta">
+          <span class="post-time">
+
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+
+                <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-14T17:59:55+08:00">
+                2017-08-14
+              </time>
+
+
+
+
+
+          </span>
+
+
+                                    <span class="post-category">
+
+              <span class="post-meta-divider">|</span>
+
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+
+                <span class="post-meta-item-text">分类于</span>
+
+
+                <span itemprop="about" itemscope="" itemtype="http://schema.org/Thing">
+                  <a href="/categories/学习总结/" itemprop="url" rel="index">
+                    <span itemprop="name">学习总结</span>
+                  </a>
+                </span>
+
+
+
+
+            </span>
+
+
+                                    <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2017/08/14/谈谈JS中的高级函数/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count" data-disqus-identifier="2017/08/14/谈谈JS中的高级函数/"
+                        itemprop="commentCount"></span>
+                </a>
+              </span>
+
+
+                                    <span id="/2017/08/14/谈谈JS中的高级函数/" class="leancloud_visitors"
+                                          data-flag-title="谈谈JS中的高级函数">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+
+                 <span class="post-meta-item-text">阅读次数 </span>
+
+                 <span class="leancloud-visitors-count">1167</span>
+             </span>
+
+
+                                    <span class="post-meta-divider">|</span>
+                                    <span class="page-pv"><i class="fa fa-file-o"></i>
+            <span class="busuanzi-value" id="busuanzi_value_page_pv">1235</span>
+            </span>
+
+
+                                </div>
+                            </header>
+
+
+                            <div class="post-body" itemprop="articleBody">
+
+
+                                <blockquote>
+                                    <p>博客原文地址：<a href="https://claiyre.github.io/" target="_blank" rel="external">Claiyre的个人博客</a><br>如需转载，请在文章开头注明原文地址
+                                    </p>
+                                </blockquote>
+                                <p>
+                                    在JavaScript中，函数的功能十分强大。它们是第一类对象，也可以作为另一个对象的方法，还可以作为参数传入另一个函数，不仅如此，还能被一个函数返回！可以说，在JS中，函数无处不在，无所不能，堪比孙猴子呀！当你运用好函数时，它能助你取西经，让代码变得优雅简洁，运用不好时，那就遭殃了，要大闹天宫咯~<br>除了函数相关的基础知识外，掌握一些高级函数并应用起来，不仅能让JS代码看起来更为精简，还可以提升性能。以下是博主总结的一些常用的、重要的高级函数，加上了一些个人见解，特此记录下来。如果您是JS初学者，也不要被“高级”两个字吓到，因为文中穿插讲解了一些原型、this等基础知识，相信并不难理解。如果您是JS大牛，也可以把本文用来查漏补缺。
+                                </p>
+                                <a id="more"></a>
+                                <h1 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h1>
+                                <h3 id="作用域安全的构造函数"><a href="#作用域安全的构造函数" class="headerlink" title="作用域安全的构造函数"></a>作用域安全的构造函数
+                                </h3>
+                                <figure class="highlight actionscript">
+                                    <table>
+                                        <tbody>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><div class="line">1</div><div class="line">2</div><div
+                                                        class="line">3</div><div class="line">4</div><div
+                                                        class="line">5</div></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><div class="line"><span class="function"><span class="keyword">function</span> <span
+                                                        class="title">Person</span><span
+                                                        class="params">(name,age)</span></span>{</div><div class="line">	<span
+                                                        class="keyword">this</span>.name = name;</div><div class="line">	<span
+                                                        class="keyword">this</span>.age = age;</div><div
+                                                        class="line">}</div><div class="line"><span
+                                                        class="keyword">var</span> p1 = <span class="keyword">new</span> Person(<span
+                                                        class="string">"Claiyre"</span>,<span class="number">80</span>);</div></pre>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </figure>
+                                <p>相信您对上面的构造函数一定不陌生，但是，，如果某个粗心的程序猿调用这个构造函数时忘记加<code>new</code>了会发生什么？</p>
+                                <figure class="highlight javascript">
+                                    <table>
+                                        <tbody>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><div class="line">1</div><div class="line">2</div><div
+                                                        class="line">3</div></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><div class="line"><span
+                                                        class="keyword">var</span> p3 = Person(<span class="string">"Tom"</span>,<span
+                                                        class="number">30</span>);</div><div class="line"><span
+                                                        class="built_in">console</span>.log(p3);              <span
+                                                        class="comment">//undefined</span></div><div class="line"><span
+                                                        class="built_in">console</span>.log(<span class="built_in">window</span>.name);     <span
+                                                        class="comment">//Tom</span></div></pre>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </figure>
+                                <p>由于使用了不安全的构造函数，上面的代码意外的改变了window的name，因为<code>this</code>对象是在运行时绑定的，使用new调用构造函数时<code>this</code>是指向新创建的对象的，不使用<code>new</code>时，<code>this</code>是指向window的。<br>由于window的name属性是用来识别链接目标和frame的，所在这里对该属性的偶然覆盖可能导致其他错误。
+                                </p>
+                                <p>作用域安全的构造函数会首先确认<code>this</code>对象是正确类型的实例，然后再进行更改，如下：</p>
+                                <figure class="highlight actionscript">
+                                    <table>
+                                        <tbody>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><div class="line">1</div><div class="line">2</div><div
+                                                        class="line">3</div><div class="line">4</div><div
+                                                        class="line">5</div><div class="line">6</div><div
+                                                        class="line">7</div><div class="line">8</div></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><div class="line"><span class="function"><span class="keyword">function</span> <span
+                                                        class="title">Person</span><span
+                                                        class="params">(name,age)</span></span>{</div><div class="line">	<span
+                                                        class="keyword">if</span>(<span
+                                                        class="keyword">this</span> <span
+                                                        class="keyword">instanceof</span> Person){</div><div
+                                                        class="line">		<span class="keyword">this</span>.name = name;</div><div
+                                                        class="line">		<span class="keyword">this</span>.age = age;</div><div
+                                                        class="line">	} <span class="keyword">else</span> {</div><div
+                                                        class="line">		<span class="keyword">return</span> <span
+                                                        class="keyword">new</span> Person(name,age);</div><div
+                                                        class="line">	}	</div><div class="line">}</div></pre>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </figure>
+                                <p>这样就避免了在全局对象上意外更改或设置属性。<br>实现这个安全模式，相当于锁定了调用构造函数的环境，因此借用构造函数继承模式可能会出现问题，解决方法是组合使用原型链和构造函数模式，即组合继承。<br>如果您是一个JS库或框架的开发者，相信作用域安全的构造函数一定对您非常有用。在多人协作的项目中，为了避免他们误改了全局对象，也应使用作用域安全的构造函数。
+                                </p>
+                                <h3 id="惰性载入函数"><a href="#惰性载入函数" class="headerlink" title="惰性载入函数"></a>惰性载入函数</h3>
+                                <p>
+                                    由于浏览器间的行为差异，代码中可能会有许多检测浏览器行为的if语句。但用户的浏览器若支持某一特性，便会一直支持，所以这些if语句，只用被执行一次，即便只有一个if语句的代码，也比没有要快。<br>惰性载入表示函数执行的分支仅会执行一次，有两种实现惰性载入的方式，第一种就是在函数第一次被调用时再处理函数，用检测到的结果重写原函数。
+                                </p>
+                                <figure class="highlight actionscript">
+                                    <table>
+                                        <tbody>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><div class="line">1</div><div class="line">2</div><div
+                                                        class="line">3</div><div class="line">4</div><div
+                                                        class="line">5</div><div class="line">6</div><div
+                                                        class="line">7</div><div class="line">8</div><div
+                                                        class="line">9</div><div class="line">10</div><div class="line">11</div><div
+                                                        class="line">12</div><div class="line">13</div><div
+                                                        class="line">14</div><div class="line">15</div></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><div class="line"><span class="function"><span class="keyword">function</span> <span
+                                                        class="title">detection</span><span
+                                                        class="params">()</span></span>{</div><div
+                                                        class="line">	<span class="keyword">if</span>(<span
+                                                        class="comment">//支持某特性){</span></div><div class="line">		detection = <span
+                                                        class="function"><span class="keyword">function</span><span
+                                                        class="params">()</span></span>{</div><div class="line">			<span
+                                                        class="comment">//直接用支持的特性</span></div><div class="line">		}</div><div
+                                                        class="line">	} <span class="keyword">else</span> <span
+                                                        class="keyword">if</span>(<span
+                                                        class="comment">//支持第二种特性){</span></div><div class="line">		detection = <span
+                                                        class="function"><span class="keyword">function</span><span
+                                                        class="params">()</span></span>{</div><div class="line">			<span
+                                                        class="comment">//用第二种特性</span></div><div
+                                                        class="line">		}</div><div class="line">	} <span
+                                                        class="keyword">else</span> {</div><div class="line">		detection = <span
+                                                        class="function"><span class="keyword">function</span><span
+                                                        class="params">()</span></span>{</div><div class="line">			<span
+                                                        class="comment">//用其他解决方案</span></div><div class="line">		}</div><div
+                                                        class="line">	}</div><div class="line">}</div></pre>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </figure>
+                                <p>第二种实现惰性载入的方式是在声明函数时就指定适当的函数</p>
+                                <figure class="highlight actionscript">
+                                    <table>
+                                        <tbody>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><div class="line">1</div><div class="line">2</div><div
+                                                        class="line">3</div><div class="line">4</div><div
+                                                        class="line">5</div><div class="line">6</div><div
+                                                        class="line">7</div><div class="line">8</div><div
+                                                        class="line">9</div><div class="line">10</div><div class="line">11</div><div
+                                                        class="line">12</div><div class="line">13</div><div
+                                                        class="line">14</div><div class="line">15</div></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><div class="line"><span
+                                                        class="keyword">var</span> detection = (<span
+                                                        class="function"><span class="keyword">function</span><span
+                                                        class="params">()</span></span>{</div><div
+                                                        class="line">	<span class="keyword">if</span>(<span
+                                                        class="comment">//支持某特性){</span></div><div class="line">		<span
+                                                        class="keyword">return</span> <span class="function"><span
+                                                        class="keyword">function</span><span
+                                                        class="params">()</span></span>{</div><div class="line">			<span
+                                                        class="comment">//直接用支持的特性</span></div><div class="line">		}</div><div
+                                                        class="line">	} <span class="keyword">else</span> <span
+                                                        class="keyword">if</span>(<span
+                                                        class="comment">//支持第二种特性){</span></div><div class="line">		<span
+                                                        class="keyword">return</span> <span class="function"><span
+                                                        class="keyword">function</span><span
+                                                        class="params">()</span></span>{</div><div class="line">			<span
+                                                        class="comment">//用第二种特性</span></div><div
+                                                        class="line">		}</div><div class="line">	} <span
+                                                        class="keyword">else</span> {</div><div
+                                                        class="line">		<span class="keyword">return</span> <span
+                                                        class="function"><span class="keyword">function</span><span
+                                                        class="params">()</span></span>{</div><div class="line">			<span
+                                                        class="comment">//用其他解决方案</span></div><div class="line">		}</div><div
+                                                        class="line">	} </div><div class="line">})();</div></pre>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </figure>
+                                <p>惰性载入函数的有点是在只初次执行时牺牲一点性能，之后便不会再有多余的消耗性能。</p>
+                                <h3 id="函数绑定作用域"><a href="#函数绑定作用域" class="headerlink" title="函数绑定作用域"></a>函数绑定作用域</h3>
+                                <p>
+                                    在JS中，函数的作用域是在函数被调用时动态绑定的，也就是说函数的this对象的指向是不定的，但在一些情况下，我们需要让某一函数的执行作用域固定，总是指向某一对象。这时怎么办呢？<br>当当当~~可以用函数绑定作用域函数呀
+                                </p>
+                                <figure class="highlight javascript">
+                                    <table>
+                                        <tbody>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><div class="line">1</div><div class="line">2</div><div
+                                                        class="line">3</div><div class="line">4</div><div
+                                                        class="line">5</div></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><div class="line"><span class="function"><span class="keyword">function</span> <span
+                                                        class="title">bind</span>(<span class="params">fn,context</span>)</span>{</div><div
+                                                        class="line">	<span class="keyword">return</span> <span
+                                                        class="function"><span class="keyword">function</span>(<span
+                                                        class="params"></span>)</span>{</div><div
+                                                        class="line">		<span class="keyword">return</span> fn.apply(context,<span
+                                                        class="built_in">arguments</span>);</div><div
+                                                        class="line">	}</div><div class="line">}</div></pre>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </figure>
+                                <p>用法：</p>
+                                <figure class="highlight actionscript">
+                                    <table>
+                                        <tbody>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><div class="line">1</div><div class="line">2</div><div
+                                                        class="line">3</div><div class="line">4</div><div
+                                                        class="line">5</div><div class="line">6</div><div
+                                                        class="line">7</div><div class="line">8</div></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><div class="line"><span
+                                                        class="keyword">var</span> person1 = {</div><div class="line">	name: <span
+                                                        class="string">"claiyre"</span>,</div><div class="line">	sayName: <span
+                                                        class="function"><span class="keyword">function</span><span
+                                                        class="params">()</span></span>{</div><div class="line">		alert(<span
+                                                        class="keyword">this</span>.name);</div><div
+                                                        class="line">	}</div><div class="line">}</div><div
+                                                        class="line"><span class="keyword">var</span> sayPerson1Name = bind(person1.sayName,person1);</div><div
+                                                        class="line">sayPerson1Name();  <span
+                                                        class="comment">//claiyre</span></div></pre>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </figure>
+                                <p><code>call</code>函数和<code>apply</code>函数可以临时改变函数的作用域，使用bind函数可以得到一个绑定了作用域的函数</p>
+                                <h3 id="函数柯里化-curry"><a href="#函数柯里化-curry" class="headerlink" title="函数柯里化(curry)"></a>函数柯里化(curry)
+                                </h3>
+                                <p>curry的概念很简单：只传递部分参数来调用函数，然后让函数返回另一个函数去处理剩下的参数。可以理解为赋予了函数“加载”的能力。<br>许多js库中都封装了curry函数，具体使用可以这样。
+                                </p>
+                                <figure class="highlight javascript">
+                                    <table>
+                                        <tbody>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><div class="line">1</div><div class="line">2</div><div
+                                                        class="line">3</div><div class="line">4</div><div
+                                                        class="line">5</div><div class="line">6</div><div
+                                                        class="line">7</div><div class="line">8</div><div
+                                                        class="line">9</div><div class="line">10</div><div class="line">11</div><div
+                                                        class="line">12</div><div class="line">13</div><div
+                                                        class="line">14</div></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><div class="line"><span
+                                                        class="keyword">var</span> match = curry(<span class="function"><span
+                                                        class="keyword">function</span>(<span
+                                                        class="params">what,str</span>)</span>{</div><div class="line">	<span
+                                                        class="keyword">return</span> str.match(what)</div><div
+                                                        class="line">});	</div><div class="line"></div><div
+                                                        class="line"><span class="keyword">var</span> hasNumber = match(<span
+                                                        class="regexp">/[0-9]+/g</span>);</div><div class="line"><span
+                                                        class="keyword">var</span> hasSpace = match(<span
+                                                        class="regexp">/\s+/g</span>)</div><div class="line"></div><div
+                                                        class="line">hasNumber(<span class="string">"123asd"</span>);       <span
+                                                        class="comment">//['123']</span></div><div class="line">hasNumber(<span
+                                                        class="string">"hello world!"</span>);  <span class="comment">//null</span></div><div
+                                                        class="line"></div><div class="line">hasSpace(<span
+                                                        class="string">"hello world!"</span>);  <span class="comment">//[' '];</span></div><div
+                                                        class="line">hasSpace(<span class="string">"hello"</span>);         <span
+                                                        class="comment">//null</span></div><div class="line"></div><div
+                                                        class="line"><span
+                                                        class="built_in">console</span>.log(match(<span class="regexp">/\s+/g</span>,<span
+                                                        class="string">'i am  Claiyre'</span>));  <span class="comment">//直接全部传参也可： [' ','  ']</span></div></pre>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </figure>
+                                <p>
+                                    一旦函数经过柯里化，我们就可以先传递部分参数调用它，然后得到一个更具体的函数。这个更具体的函数通过闭包帮我们记住了第一次传递的参数，最后我们就可以用这个更具体的函数为所欲为啦~</p>
+                                <p>一个较为简单的实现curry的方式：</p>
+                                <figure class="highlight javascript">
+                                    <table>
+                                        <tbody>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><div class="line">1</div><div class="line">2</div><div
+                                                        class="line">3</div><div class="line">4</div><div
+                                                        class="line">5</div><div class="line">6</div><div
+                                                        class="line">7</div><div class="line">8</div><div
+                                                        class="line">9</div><div class="line">10</div><div class="line">11</div><div
+                                                        class="line">12</div></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><div class="line"><span class="function"><span class="keyword">function</span> <span
+                                                        class="title">curry</span>(<span
+                                                        class="params">fn</span>)</span>{</div><div
+                                                        class="line">	<span class="keyword">var</span> i = <span
+                                                        class="number">0</span>;</div><div class="line">	<span
+                                                        class="keyword">var</span> outer = <span
+                                                        class="built_in">Array</span>.prototype.slice.call(<span
+                                                        class="built_in">arguments</span>,<span class="number">1</span>);</div><div
+                                                        class="line">	<span class="keyword">var</span> len = fn.length;</div><div
+                                                        class="line">	<span class="keyword">return</span> <span
+                                                        class="function"><span class="keyword">function</span>(<span
+                                                        class="params"></span>)</span>{</div><div
+                                                        class="line">		<span class="keyword">var</span> inner = outer.concat(<span
+                                                        class="built_in">Array</span>.prototype.slice.call(<span
+                                                        class="built_in">arguments</span>));</div><div class="line">		<span
+                                                        class="keyword">return</span> inner.length === len?fn.apply(<span
+                                                        class="literal">null</span>,inner):<span class="function"><span
+                                                        class="keyword">function</span> (<span
+                                                        class="params"></span>)</span>{</div><div class="line">				<span
+                                                        class="keyword">var</span> finalArgs = inner.concat(<span
+                                                        class="built_in">Array</span>.prototype.slice.call(<span
+                                                        class="built_in">arguments</span>));</div><div class="line">				<span
+                                                        class="keyword">return</span> fn.apply(<span class="literal">null</span>,finalArgs);</div><div
+                                                        class="line">			}</div><div class="line">	}</div><div
+                                                        class="line">}</div></pre>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </figure>
+                                <h3 id="debounce函数"><a href="#debounce函数" class="headerlink" title="debounce函数"></a>debounce函数
+                                </h3>
+                                <p>debounce函数，又称“去抖函数”。它的功能也很简单直接，就是防止某一函数被连续调用，从而导致浏览器卡死或崩溃。用法如下：</p>
+                                <figure class="highlight javascript">
+                                    <table>
+                                        <tbody>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><div class="line">1</div><div class="line">2</div><div
+                                                        class="line">3</div><div class="line">4</div></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><div class="line"><span class="keyword">var</span> myFunc = debounce(<span
+                                                        class="function"><span class="keyword">function</span>(<span
+                                                        class="params"></span>)</span>{</div><div class="line">	<span
+                                                        class="comment">//繁重、耗性能的操作</span></div><div
+                                                        class="line">}，<span class="number">250</span>);</div><div
+                                                        class="line"><span class="built_in">window</span>.addEventListener(<span
+                                                        class="string">'resize'</span>,myFunc);</div></pre>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </figure>
+                                <p>像窗口的resize，这类可以以较高的速率触发的事件，非常适合用去抖函数，这时也可称作“函数节流”，避免给浏览器带来过大的性能负担。<br>具体的实现时，当函数被调用时，不立即执行相应的语句，而是等待固定的时间w,若在w时间内，即等待还未结束时，函数又被调用了一次，则再等待w时间，重复上述过程，直到最后一次被调用后的w时间内该函数都没有被再调用，则执行相应的代码。<br>实现代码如下：
+                                </p>
+                                <figure class="highlight actionscript">
+                                    <table>
+                                        <tbody>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><div class="line">1</div><div class="line">2</div><div
+                                                        class="line">3</div><div class="line">4</div><div
+                                                        class="line">5</div><div class="line">6</div><div
+                                                        class="line">7</div></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><div class="line"><span class="function"><span class="keyword">function</span> <span
+                                                        class="title">debounce</span><span
+                                                        class="params">(fn,wait)</span></span>{</div><div class="line">	<span
+                                                        class="keyword">var</span> td;</div><div class="line">	<span
+                                                        class="keyword">return</span> <span class="function"><span
+                                                        class="keyword">function</span><span
+                                                        class="params">()</span></span>{</div><div class="line">		clearTimeout(td);</div><div
+                                                        class="line">		td= setTimeout(fn,wait);</div><div
+                                                        class="line">	}</div><div class="line">}</div></pre>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </figure>
+                                <h3 id="once函数"><a href="#once函数" class="headerlink" title="once函数"></a>once函数</h3>
+                                <p>顾名思义，once函数是仅仅会被执行一次的函数。具体实现如下：</p>
+                                <figure class="highlight javascript">
+                                    <table>
+                                        <tbody>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><div class="line">1</div><div class="line">2</div><div
+                                                        class="line">3</div><div class="line">4</div><div
+                                                        class="line">5</div><div class="line">6</div><div
+                                                        class="line">7</div><div class="line">8</div><div
+                                                        class="line">9</div><div class="line">10</div><div class="line">11</div><div
+                                                        class="line">12</div><div class="line">13</div><div
+                                                        class="line">14</div></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><div class="line"><span class="function"><span class="keyword">function</span> <span
+                                                        class="title">once</span>(<span class="params">fn</span>)</span>{</div><div
+                                                        class="line">	<span class="keyword">var</span> result;</div><div
+                                                        class="line">	<span class="keyword">return</span> <span
+                                                        class="function"><span class="keyword">function</span>(<span
+                                                        class="params"></span>)</span>{</div><div
+                                                        class="line">		<span class="keyword">if</span>(fn){</div><div
+                                                        class="line">			result = fn(<span class="built_in">arguments</span>);</div><div
+                                                        class="line">			fn = <span class="literal">null</span>;</div><div
+                                                        class="line">		}</div><div class="line">		<span
+                                                        class="keyword">return</span> result;</div><div class="line">	}</div><div
+                                                        class="line">}</div><div class="line"></div><div
+                                                        class="line"><span class="keyword">var</span> init = once(<span
+                                                        class="function"><span class="keyword">function</span>(<span
+                                                        class="params"></span>)</span>{</div><div class="line">	<span
+                                                        class="comment">//初始化操作</span></div><div
+                                                        class="line">})</div></pre>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </figure>
+                                <p>在被执行过一次后,参数fn就被赋值null了，那么在接下来被调用时，便再也不会进入到if语句中了，也就是第一次被调用后，该函数永远不会被执行了。</p>
+                                <p>还可以对上述once函数进行改进，不仅可以传入函数，同时还可以给传入的函数绑定作用域u，同时实现了bind和once。</p>
+                                <figure class="highlight javascript">
+                                    <table>
+                                        <tbody>
+                                        <tr>
+                                            <td class="gutter">
+                                                <pre><div class="line">1</div><div class="line">2</div><div
+                                                        class="line">3</div><div class="line">4</div><div
+                                                        class="line">5</div><div class="line">6</div><div
+                                                        class="line">7</div><div class="line">8</div><div
+                                                        class="line">9</div><div class="line">10</div></pre>
+                                            </td>
+                                            <td class="code">
+                                                <pre><div class="line"><span class="function"><span class="keyword">function</span> <span
+                                                        class="title">once</span>(<span class="params">fn,context</span>)</span>{</div><div
+                                                        class="line">	<span class="keyword">var</span> result;</div><div
+                                                        class="line">	<span class="keyword">return</span> <span
+                                                        class="function"><span class="keyword">function</span>(<span
+                                                        class="params"></span>)</span>{</div><div
+                                                        class="line">		<span class="keyword">if</span>(fn){</div><div
+                                                        class="line">			result = fn.apply(context,<span
+                                                        class="built_in">arguments</span>);</div><div class="line">			fn = <span
+                                                        class="literal">null</span>;</div><div
+                                                        class="line">		}</div><div class="line">		<span
+                                                        class="keyword">return</span> result;</div><div class="line">	}</div><div
+                                                        class="line">}</div></pre>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </figure>
+                                <h1 id="结语"><a href="#结语" class="headerlink" title="结语"></a>结语</h1>
+                                <p>
+                                    通过以上的阅读，不难发现很多“高级函数”的实现其实并不复杂，数十行代码便可搞定，但重要的是能真正理解它们的原理，在实际中适时地应用，以此性能提升，让代码简洁，逻辑清晰</p>
+
+
+                            </div>
+
+
+
+
+
+
+                        </article>
+
+
+                        <div class="post-spread">
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+
+
+
+            </div>
+
+
+
+
+
+
+
+        </div>
+    </main>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
